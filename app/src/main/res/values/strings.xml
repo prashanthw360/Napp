@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">Napp</string>
+    <string name="pass_hint">Password..</string>
+    <string name="email_hint">Your Email..</string>
+    <string name="login_text">Welcome to Napp</string>
+    <string name="login_btn_txt">Login to Account</string>
+    <string name="login_reg_btn_txt">Need a new Account?</string>
+    <string name="loginpassword">Password..</string>
+    <string name="action_search_text">Search</string>
+    <string name="action_settings_text">Account Settings</string>
+    <string name="action_logout_text">Logout</string>
+    <string name="action_search_bar">Search</string>
+    <string name="action_account_settings">Account Settings</string>
+    <string name="action_logout">Logout</string>
+</resources>
