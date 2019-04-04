@@ -10,8 +10,11 @@
         app:showAsAction="always" />
     <item
         android:id="@+id/action_ac_sett"
+        android:icon="@drawable/ic_settings_black_24dp"
         android:title="@string/action_account_settings" />
     <item
         android:id="@+id/action_logout"
+
+        android:icon="@drawable/signout"
         android:title="@string/action_logout" />
 </menu>

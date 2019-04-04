@@ -1,15 +1,17 @@
 package com.example.napp;
 
 import android.content.Intent;
-import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -25,6 +27,8 @@ public class MainActivity extends AppCompatActivity {
     private Toolbar mainToolBar;
     private String uid;
     private DatabaseReference mDatabase;
+  /*  ImageView ig;
+    Integer REQUEST_CAMERA=1, SELECT_FILE=0;*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +42,69 @@ public class MainActivity extends AppCompatActivity {
         mainToolBar=(Toolbar)findViewById(R.id.main_toolbar);
         setSupportActionBar(mainToolBar);
         getSupportActionBar().setTitle("Napp Portal");
+
+        BottomNavigationView navigationView = findViewById(R.id.nav);
+
+        final HomeFragment homeFragment= new HomeFragment();
+        final AddPostFragment addPostFragment = new AddPostFragment();
+        final MyPostsFragment myPostsFragment = new MyPostsFragment();
+
+
+      /*  ig=(ImageView)findViewById(R.id.newPost);
+
+        private void SelectImage(){
+            final CharSequence[] items= {"Camera","Gallery","Cancel"};
+            AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+            builder.setTitle("Add Image");
+            builder.setItems(items, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    if(items[i].equals("Camera")){
+                        Intent intent=new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                        startActivityForResult(intent,REQUEST_CAMERA);
+                    }else if(items[i].equals("Gallery")){
+                        Intent intent=new Intent(Intent.ACTION_PICK,MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                        intent.setType("image/*");
+                        startActivityForResult(intent.createChooser(intent,"Select File"),SELECT_FILE);
+
+                    }else if(items[i].equals("Cancel")){
+                        dialogInterface.dismiss();
+                    }
+                }
+            });
+        }
+
+        */
+
+            navigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+                @Override
+                public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                   int id = menuItem.getItemId();
+                   if(id == R.id.Home){
+                       setFragment(homeFragment);
+                       return true;
+                   }
+                    else if(id == R.id.AddPost){
+                        setFragment(addPostFragment);
+                        return true;
+                    }
+                    else if(id == R.id.MyPosts){
+                        setFragment(myPostsFragment);
+                        return true;
+                    }
+                    return false;
+                }
+            });
+
+            navigationView.setSelectedItemId(R.id.Home);
     }
+
+    private void setFragment(Fragment fragment){
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.frame,fragment);
+        fragmentTransaction.commit();
+    }
+
 
     @Override
     protected void onStart() {
@@ -57,7 +123,7 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     String usn = dataSnapshot.getValue(String.class);
-                    Log.e("MainAcitvity", usn);
+
                 }
 
                 @Override
