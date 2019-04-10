@@ -118,7 +118,7 @@ public class AddPostFragment extends Fragment {
              @Override
              public void onItemSelected(AdapterView<?> arg0, View arg1, int position, long id) {
                  receivedDept = departments[position];
-                 Toast.makeText(getActivity().getApplicationContext(),departments[position] , Toast.LENGTH_LONG).show();
+                 //Toast.makeText(getActivity().getApplicationContext(),departments[position] , Toast.LENGTH_LONG).show();
              }
 
              @Override
