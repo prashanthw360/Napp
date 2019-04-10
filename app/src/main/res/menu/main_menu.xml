@@ -15,6 +15,6 @@
     <item
         android:id="@+id/action_logout"
 
-        android:icon="@drawable/signout"
+
         android:title="@string/action_logout" />
 </menu>

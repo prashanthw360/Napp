@@ -31,10 +31,11 @@
     app:menu="@menu/bottom_nav_view"></android.support.design.widget.BottomNavigationView>
 
     <FrameLayout
+        android:id="@+id/frame"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/nav"
-        android:id="@+id/frame"></FrameLayout>
+        android:layout_below="@id/main_toolbar"></FrameLayout>
 
 
 </RelativeLayout>
