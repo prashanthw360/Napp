@@ -8,7 +8,8 @@
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/lightblu">
 
         <ImageView
             android:id="@+id/ShowImageView"
@@ -26,12 +27,12 @@
         <EditText
             android:id="@+id/imageDescription"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="124dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:ems="10"
-            android:hint="Description.."
+            android:hint="Description"
             android:inputType="textPersonName"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -47,19 +48,25 @@
             android:text="Choose Image"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            android:textColor="#FFFFFF"
+            android:background="@drawable/button_round"/>
 
         <Button
             android:id="@+id/ButtonUploadImage"
             android:layout_width="119dp"
             android:layout_height="54dp"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="112dp"
             android:layout_marginEnd="8dp"
             android:text="Upload"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageDescription" />
+            app:layout_constraintTop_toBottomOf="@+id/imageDescription"
+            android:background="@drawable/button_round"
+            android:textColor="#FFFFFF"
+
+            />
 
         <EditText
             android:id="@+id/imageTitle"
@@ -69,11 +76,13 @@
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:ems="10"
-            android:hint="Title"
+            android:hint="@string/title"
             android:inputType="textPersonName"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/spinnerSelectDept" />
+            app:layout_constraintTop_toBottomOf="@+id/spinnerSelectDept"
+
+            />
 
         <Spinner
             android:id="@+id/spinnerSelectDept"
@@ -87,7 +96,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ShowImageView" />
+            app:layout_constraintTop_toBottomOf="@+id/ShowImageView"
+             />
 
     </android.support.constraint.ConstraintLayout>
 </FrameLayout>

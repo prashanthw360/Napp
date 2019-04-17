@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,8 +23,11 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.Continuation;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
@@ -32,6 +36,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.google.firebase.storage.UploadTask.TaskSnapshot;
 
 import java.io.IOException;
 
@@ -46,7 +51,7 @@ public class AddPostFragment extends Fragment {
 
     String Storage_Path = "All_Image_Uploads/";
 
-    String Database_Path = "All_Image_Uploads_Database";
+    String Database_Path = "Posts";
 
     // Creating button.
     Button ChooseButton, UploadButton;
@@ -72,102 +77,102 @@ public class AddPostFragment extends Fragment {
     Spinner spin;
     String receivedDept,uid;
 
-    String[] departments = { "Select Department", "Water", "Infrastructure", "Management", "Cleaning",};
+    String[] departments = { "General", "Water", "Infrastructure", "Management", "Cleaning", "Anti-Ragging"};
 
     public AddPostFragment() {
         // Required empty public constructor
     }
 
 
-     @Override
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v= inflater.inflate(R.layout.fragment_add_post, container, false);
 
 
-         FirebaseApp.initializeApp(getActivity());
+        FirebaseApp.initializeApp(getActivity());
 
-         // Assign FirebaseStorage instance to storageReference.
-         storageReference = FirebaseStorage.getInstance().getReference();
+        // Assign FirebaseStorage instance to storageReference.
+        storageReference = FirebaseStorage.getInstance().getReference();
 
-         // Assign FirebaseDatabase instance with root database name.
-         databaseReference = FirebaseDatabase.getInstance().getReference(Database_Path);
+        // Assign FirebaseDatabase instance with root database name.
+        databaseReference = FirebaseDatabase.getInstance().getReference(Database_Path);
 
-         //Assign ID'S to button.
-         ChooseButton = (Button)v.findViewById(R.id.ButtonChooseImage);
-         UploadButton = (Button)v.findViewById(R.id.ButtonUploadImage);
+        //Assign ID'S to button.
+        ChooseButton = (Button)v.findViewById(R.id.ButtonChooseImage);
+        UploadButton = (Button)v.findViewById(R.id.ButtonUploadImage);
 
-         //Assigning ID to ImageTitle
-         ImageTitle = (EditText)v.findViewById(R.id.imageTitle);
+        //Assigning ID to ImageTitle
+        ImageTitle = (EditText)v.findViewById(R.id.imageTitle);
 
-         // Assign ID's to ImageDescription
-         ImageDesc = (EditText)v.findViewById(R.id.imageDescription);
+        // Assign ID's to ImageDescription
+        ImageDesc = (EditText)v.findViewById(R.id.imageDescription);
 
-         // Assign ID'S to image view.
-         SelectImage = (ImageView)v.findViewById(R.id.ShowImageView);
+        // Assign ID'S to image view.
+        SelectImage = (ImageView)v.findViewById(R.id.ShowImageView);
 
-         // Assigning Id to ProgressDialog.
-         progressDialog = new ProgressDialog(getActivity());
-
-
-         spin = v.findViewById(R.id.spinnerSelectDept);
-
-         spin.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
-
-             @Override
-             public void onItemSelected(AdapterView<?> arg0, View arg1, int position, long id) {
-                 receivedDept = departments[position];
-                 //Toast.makeText(getActivity().getApplicationContext(),departments[position] , Toast.LENGTH_LONG).show();
-             }
-
-             @Override
-             public void onNothingSelected(AdapterView<?> parent) {
-                 Toast.makeText(getActivity(), "No item is selected", Toast.LENGTH_SHORT).show();
-
-             }
-         });
+        // Assigning Id to ProgressDialog.
+        progressDialog = new ProgressDialog(getActivity());
 
 
-         //Creating the ArrayAdapter instance having the country list
-         ArrayAdapter aa = new ArrayAdapter(getActivity(),android.R.layout.simple_spinner_item,departments);
-         aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-         //Setting the ArrayAdapter data on the Spinner
-         spin.setAdapter(aa);
+        spin = v.findViewById(R.id.spinnerSelectDept);
 
-         // Adding click listener to Choose image button.
-         ChooseButton.setOnClickListener(new View.OnClickListener() {
-             @Override
-             public void onClick(View view) {
+        spin.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
 
-                 // Creating intent.
-                 Intent intent = new Intent();
+            @Override
+            public void onItemSelected(AdapterView<?> arg0, View arg1, int position, long id) {
+                receivedDept = departments[position];
+                //Toast.makeText(getActivity().getApplicationContext(),departments[position] , Toast.LENGTH_LONG).show();
+            }
 
-                 // Setting intent type as image to select image from phone storage.
-                 intent.setType("image/*");
-                 intent.setAction(Intent.ACTION_GET_CONTENT);
-                 startActivityForResult(Intent.createChooser(intent, "Please Select Image"), Image_Request_Code);
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                Toast.makeText(getActivity(), "No item is selected", Toast.LENGTH_SHORT).show();
 
-             }
-         });
+            }
+        });
 
 
-         // Adding click listener to Upload image button.
-         UploadButton.setOnClickListener(new View.OnClickListener() {
-             @Override
-             public void onClick(View view) {
+        //Creating the ArrayAdapter instance having the country list
+        ArrayAdapter aa = new ArrayAdapter(getActivity(),android.R.layout.simple_spinner_item,departments);
+        aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        //Setting the ArrayAdapter data on the Spinner
+        spin.setAdapter(aa);
 
-                 // Calling method to upload selected image on Firebase storage.
-                 UploadImageFileToFirebaseStorage();
+        // Adding click listener to Choose image button.
+        ChooseButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
 
-             }
-         });
+                // Creating intent.
+                Intent intent = new Intent();
+
+                // Setting intent type as image to select image from phone storage.
+                intent.setType("image/*");
+                intent.setAction(Intent.ACTION_GET_CONTENT);
+                startActivityForResult(Intent.createChooser(intent, "Please Select Image"), Image_Request_Code);
+
+            }
+        });
 
 
+        // Adding click listener to Upload image button.
+        UploadButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                // Calling method to upload selected image on Firebase storage.
+                UploadImageFileToFirebaseStorage();
+
+            }
+        });
 
 
 
-         return v;
+
+
+        return v;
     }
 
     @Override
@@ -218,19 +223,20 @@ public class AddPostFragment extends Fragment {
         if (FilePathUri != null) {
 
             // Setting progressDialog Title.
-            progressDialog.setTitle("Image is Uploading...");
+            progressDialog.setTitle("Adding Post");
 
             // Showing progressDialog.
             progressDialog.show();
 
             // Creating second StorageReference.
-            StorageReference storageReference2nd = storageReference.child(Storage_Path + System.currentTimeMillis() + "." + GetFileExtension(FilePathUri));
+            String filename = String.valueOf(System.currentTimeMillis());
+            final StorageReference storageReference2nd = storageReference.child(Storage_Path + filename + "." + GetFileExtension(FilePathUri));
 
             // Adding addOnSuccessListener to second StorageReference.
             storageReference2nd.putFile(FilePathUri)
-                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    .addOnSuccessListener(new OnSuccessListener<TaskSnapshot>() {
                         @Override
-                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        public void onSuccess(TaskSnapshot taskSnapshot) {
 
                             // Getting image description from EditText and store into string variable.
                             String TempImageTitle = ImageTitle.getText().toString().trim();
@@ -242,18 +248,32 @@ public class AddPostFragment extends Fragment {
                             progressDialog.dismiss();
 
                             // Showing toast message after done uploading.
-                            Toast.makeText(getActivity().getApplicationContext(), "Image Uploaded Successfully ", Toast.LENGTH_LONG).show();
+                            Toast.makeText(getActivity().getApplicationContext(), "Post added successfully", Toast.LENGTH_LONG).show();
 
 
-
-                            // Getting image upload ID.
-                            String ImageUploadId = databaseReference.push().getKey();
-                            ImageUploadInfo imageUploadInfo = new ImageUploadInfo(TempUid,TempImageTitle,TempDept,TempImageDesc, taskSnapshot.getMetadata().getReference().getDownloadUrl().toString());
-
-                            // Adding image upload id s child element into databaseReference.
-                            databaseReference.child(ImageUploadId).setValue(imageUploadInfo);
                         }
-                    })
+                    }).continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+                @Override
+                public Task<Uri> then(@NonNull Task<TaskSnapshot> task) throws Exception {
+                    return storageReference2nd.getDownloadUrl();
+                }
+            }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+                @Override
+                public void onComplete(@NonNull Task<Uri> task) {
+                    if(task.isSuccessful()){
+                        String TempImageTitle = ImageTitle.getText().toString().trim();
+                        String TempImageDesc = ImageDesc.getText().toString().trim();
+                        String TempDept = receivedDept.trim();
+                        String TempUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                        Uri dowUri = task.getResult();
+                        String ImageUploadId = databaseReference.push().getKey();
+                        ImageUploadInfo imageUploadInfo = new ImageUploadInfo(TempUid,TempImageTitle,TempDept,TempImageDesc, dowUri.toString());
+                        databaseReference.child(ImageUploadId).setValue(imageUploadInfo);
+
+                    }
+
+                }
+            })
                     // If something goes wrong .
                     .addOnFailureListener(new OnFailureListener() {
                         @Override
@@ -265,18 +285,8 @@ public class AddPostFragment extends Fragment {
                             // Showing exception erro message.
                             Toast.makeText(getActivity(), exception.getMessage(), Toast.LENGTH_LONG).show();
                         }
-                    })
-
-                    // On progress change upload time.
-                    .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-
-                            // Setting progressDialog Title.
-                            progressDialog.setTitle("Image is Uploading...");
-
-                        }
                     });
+
         }
         else {
 

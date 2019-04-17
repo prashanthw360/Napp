@@ -10,7 +10,7 @@
     <string name="action_settings_text">Account Settings</string>
     <string name="action_logout_text">Logout</string>
     <string name="action_search_bar">Search</string>
-    <string name="action_account_settings">Account Settings</string>
+    <string name="action_account_settings">About</string>
     <string name="action_logout">Logout</string>
 
     <!-- TODO: Remove or change this placeholder text -->
@@ -18,4 +18,10 @@
     <string name="add_post_fragmment">Add Post Fragmment</string>
     <string name="home_fragment">Home Fragment</string>
     <string name="my_posts_fragment">My Posts Fragment</string>
+    <string name="maxlines">7</string>
+    <string name="credits">NApp: An App Made with Positive Intensions By \n    Prashanth P Wagle \n    Shobha Rani N \n    Suman BH</string>
+    <string name="title">Title</string>
+    <string name="new_post">New Post</string>
+    <string name="latest_news">Latest News</string>
+    <string name="my_posts">My Posts</string>
 </resources>

@@ -4,13 +4,13 @@
     <item
         android:id="@+id/MyPosts"
         android:icon="@drawable/ic_insert_photo_black_24dp"
-        android:title="My Posts" />
+        android:title="@string/my_posts" />
     <item
         android:id="@+id/Home"
         android:icon="@drawable/ic_home_black_24dp"
-        android:title="Home" />
+        android:title="@string/latest_news" />
     <item
         android:id="@+id/AddPost"
         android:icon="@drawable/ic_library_add_black_24dp"
-        android:title="Add Post" />
+        android:title="@string/new_post" />
 </menu>

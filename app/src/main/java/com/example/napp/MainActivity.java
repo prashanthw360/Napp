@@ -27,8 +27,6 @@ public class MainActivity extends AppCompatActivity {
     private Toolbar mainToolBar;
     private String uid;
     private DatabaseReference mDatabase;
-  /*  ImageView ig;
-    Integer REQUEST_CAMERA=1, SELECT_FILE=0;*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,32 +47,6 @@ public class MainActivity extends AppCompatActivity {
         final AddPostFragment addPostFragment = new AddPostFragment();
         final MyPostsFragment myPostsFragment = new MyPostsFragment();
 
-
-      /*  ig=(ImageView)findViewById(R.id.newPost);
-
-        private void SelectImage(){
-            final CharSequence[] items= {"Camera","Gallery","Cancel"};
-            AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-            builder.setTitle("Add Image");
-            builder.setItems(items, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    if(items[i].equals("Camera")){
-                        Intent intent=new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                        startActivityForResult(intent,REQUEST_CAMERA);
-                    }else if(items[i].equals("Gallery")){
-                        Intent intent=new Intent(Intent.ACTION_PICK,MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                        intent.setType("image/*");
-                        startActivityForResult(intent.createChooser(intent,"Select File"),SELECT_FILE);
-
-                    }else if(items[i].equals("Cancel")){
-                        dialogInterface.dismiss();
-                    }
-                }
-            });
-        }
-
-        */
 
             navigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
                 @Override
@@ -111,7 +83,6 @@ public class MainActivity extends AppCompatActivity {
         super.onStart();
         FirebaseUser currentuser = mAuth.getCurrentUser();//to get the current user logged in
         Log.e("onStart", "Onstart started");
-//        Log.e("Useremail",currentuser.getEmail());
         if(currentuser==null){
             sendtologin();
 

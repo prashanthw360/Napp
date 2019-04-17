@@ -3,14 +3,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MyPostsFragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".MyPostsFragment"
+    android:background="@color/lightblu">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv"
+        android:layout_margin="8dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/my_posts_fragment"
-        android:gravity="center"
-        android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"></android.support.v7.widget.RecyclerView>
+
 
 </FrameLayout>
