@@ -15,7 +15,7 @@ through a flask web application which is official. This is the admin account. It
 ## Tools Used
 1. Android Studio (Java)
 2. Flask Application (Python)
-3. Firebase Realtime Database(NoSQL)
+3. Firebase Realtime Database
 4. Firebase Authentication
 5. Firebase Storage
 
